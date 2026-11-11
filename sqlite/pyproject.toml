@@ -1,0 +1,12 @@
+[project]
+name = "sqlite"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.162.4",
+    "scalar-fastapi>=1.9.1",
+    "sqlalchemy>=2.1.8",
+    "sqlmodel>=0.0.49",
+]
