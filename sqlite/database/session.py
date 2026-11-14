@@ -26,4 +26,5 @@ def get_session():
 
 
 # Session Dependency Annotation
+# Depends , fast api call get_session
 SessionDep = Annotated[Session, Depends(get_session)]
