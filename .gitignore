@@ -1,3 +1,5 @@
 .idea
-/sqlite/uv.lock
-/sqlite/.python-version
+uv.lock
+*.python-version
+.env
+.venv
