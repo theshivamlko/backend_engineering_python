@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 
 from models.models import ShipmentStatus
 
@@ -22,3 +22,14 @@ class ShipmentCreate(BaseShipment):
 class ShipmentUpdate(BaseModel):
     status: ShipmentStatus | None = Field(default=None)
     estimated_delivery: datetime | None = Field(default=None)
+
+
+class SellerCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+
+class SellerRead(BaseModel):
+    id: int
+    name: str
+    email: EmailStr

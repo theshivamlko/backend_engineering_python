@@ -26,3 +26,14 @@ class Shipment(SQLModel, table = True):
     destination: int
     status: ShipmentStatus
     estimated_delivery: datetime
+
+
+
+
+class Seller(SQLModel, table=True):
+    __tablename__ = "seller"
+
+    id: int = Field(default=None, primary_key=True)
+    name: str
+    email: str
+    pass_hash: str
