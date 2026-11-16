@@ -1,13 +1,7 @@
-from typing import Annotated
-
-from fastapi import Depends
-from sqlalchemy  import   create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
 
-from database.config import settings
-from models.models import Shipment
-from sqlmodel import SQLModel, Session
+from config import settings
+from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import async_sessionmaker
 engine = create_async_engine(
     url= settings.POSTGRES_URL,
