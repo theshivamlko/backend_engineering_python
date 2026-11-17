@@ -34,6 +34,7 @@ class Shipment(SQLModel, table=True):
     weight: float = Field(le=25)
     destination: int
     estimated_delivery: datetime
+    status: ShipmentStatus
     timeline:list["ShipmentEvent"] = Relationship(back_populates="shipments")
 
     seller_id: UUID = Field(foreign_key="seller.id")

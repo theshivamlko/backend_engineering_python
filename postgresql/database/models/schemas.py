@@ -18,6 +18,8 @@ class ShipmentCreate(BaseShipment):
     
 
 class ShipmentUpdate(BaseModel):
+    description: str | None = Field(default=None)
+    location: int | None = Field(default=None)
     status: ShipmentStatus | None = Field(default=None)
     estimated_delivery: datetime | None = Field(default=None)
 

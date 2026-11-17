@@ -54,7 +54,7 @@ async def update_shipment(id: UUID, shipment_update: ShipmentUpdate,
             detail="Given id doesn't exist!",
         )
 
-    updated_shipment = await service.update(id,shipment_update)
+    updated_shipment = await service.update(id,shipment_update,partner)
 
     return updated_shipment
 
