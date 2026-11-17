@@ -7,6 +7,7 @@ from starlette.requests import HTTPConnection
 from utils import decode_access_token
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/seller/sellerLogin")
+delivery_oauth_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/delivery/login")
 
 
 # Same as OAuth2PasswordBearer,

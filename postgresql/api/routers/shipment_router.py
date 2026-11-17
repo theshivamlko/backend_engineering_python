@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException
 from rich import status
 
-from api.dependencies.dependency import ShipmentServiceDepends,SellerDepends
+from api.dependencies.dependency import ShipmentServiceDepends, SellerDepends, DeliveryPartnerDepends
 from database.models.models import Shipment
 from database.models.schemas import ShipmentRead, ShipmentUpdate, ShipmentCreate
 from utils import parse_shipment_id
@@ -30,7 +30,6 @@ async def get_shipment(id:str, seller: SellerDepends, service: ShipmentServiceDe
     return shipment
 
 
-
 ### Create a new shipment with content and weight
 @shipment_router.post("/shipmentCreate", response_model=None)
 async def create_shipment(update_shipment: ShipmentCreate, seller: SellerDepends, service: ShipmentServiceDepends) -> Shipment:
@@ -44,7 +43,9 @@ async def create_shipment(update_shipment: ShipmentCreate, seller: SellerDepends
 
 ### Update fields of a shipment
 @shipment_router.patch("/shipmentUpdate", response_model=ShipmentRead)
-async def update_shipment(id: int, shipment_update: ShipmentUpdate,  service: ShipmentServiceDepends) -> Shipment:
+async def update_shipment(id: int, shipment_update: ShipmentUpdate,
+                          partner: DeliveryPartnerDepends,
+                          service: ShipmentServiceDepends) -> Shipment:
     shipment = await service.get(id)
 
     if shipment is None:
