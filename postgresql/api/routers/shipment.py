@@ -12,7 +12,7 @@ shipment_router = APIRouter(prefix="/api/v1", tags=["Shipment"])
 
 ### Read a shipment by id
 @shipment_router.get("/shipment", response_model=ShipmentRead)
-async def get_shipment(id:int, shipment: ShipmentCreate, service: ShipmentServiceDepends) -> Shipment:
+async def get_shipment(id:int, seller: SellerDepends, service: ShipmentServiceDepends) -> Shipment:
     # Check for shipment with given id
     shipment = await service.get(id)
 
@@ -36,7 +36,7 @@ async def create_shipment(seller: SellerDepends,update_shipment: ShipmentCreate,
 
 ### Update fields of a shipment
 @shipment_router.patch("/shipmentUpdate", response_model=ShipmentRead)
-async def update_shipment(id: int, shipment_update: ShipmentUpdate,  service: ShipmentServiceDepends) -> Shipment:
+async def update_shipment(id: int,seller: SellerDepends, shipment_update: ShipmentUpdate,  service: ShipmentServiceDepends) -> Shipment:
     shipment = await service.get(id)
 
     if shipment is None:
@@ -51,7 +51,7 @@ async def update_shipment(id: int, shipment_update: ShipmentUpdate,  service: Sh
 
 ### Delete a shipment by id
 @shipment_router.delete("/shipmentDelete")
-async def delete_shipment(id: int, service: ShipmentServiceDepends) -> dict[str, str]:
+async def delete_shipment(id: int, seller: SellerDepends, service: ShipmentServiceDepends) -> dict[str, str]:
     shipment = await service.get(id)
 
     if shipment is None:

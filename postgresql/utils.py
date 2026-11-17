@@ -1,9 +1,12 @@
-from datetime import timedelta
+from datetime import timedelta, timezone
+
+from fastapi import HTTPException
+from starlette import status
 
 from config import security_settings
 
 
-def generate_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=20)) -> str:
+def generate_access_token(data: dict, expires_delta: timedelta = timedelta(seconds=15)) -> str:
     """
     Generate a JWT access token for the given user ID.
 
@@ -17,7 +20,7 @@ def generate_access_token(data: dict, expires_delta: timedelta = timedelta(minut
     from datetime import datetime
     import jwt
 
-    expiration = datetime.now() + expires_delta
+    expiration = datetime.now(timezone.utc) + expires_delta
     payload = {
         "data": data,
         "exp": expiration
@@ -46,6 +49,14 @@ def decode_access_token(token: str) -> dict:
         payload = jwt.decode(jwt=token, key=security_settings.JWT_SECRET_KEY, algorithms=[security_settings.JWT_ALGORITHM])
         return payload
     except jwt.ExpiredSignatureError:
-        raise ValueError("Token has expired")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Token has expired",
+        )
     except jwt.InvalidTokenError:
-        raise ValueError("Invalid token")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid token",
+        )
+    except jwt.PyJWTError:
+        raise None
