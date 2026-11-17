@@ -30,11 +30,11 @@ async def login_partner(form: Annotated[OAuth2PasswordRequestForm, Depends()],
     return {"access_token": token, "token_type": "bearer"}
 
 
-@delivery_router.post("/update")
+@delivery_router.post("/update",response_model=DeliveryPartnerRead)
 async def update_delivery_partner(partner_update:DeliveryPartnerUpdate,
                                   partner:DeliveryPartnerDepends,
                         service: DeliveryPartnerServiceDepends):
-    await service.update(partner.sqlmodel_update(partner_update))
+    return await service.update(partner, partner_update)
 
 
 @delivery_router.get("/logout")

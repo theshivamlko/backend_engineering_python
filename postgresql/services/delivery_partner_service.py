@@ -69,16 +69,17 @@ class DeliveryPartnerService:
             raise ValueError("Invalid email or password")
         return delivery_partner
 
-    async def update(self, id: int, delivery_partner_update: DeliveryPartnerUpdate) -> DeliveryPartner:
+    async def update(self,  delivery_partner: DeliveryPartner,
+        delivery_partner_update: DeliveryPartnerUpdate,) -> DeliveryPartner:
 
-        if not delivery_partner_update:
+        update_data = delivery_partner_update.model_dump(exclude_unset=True)
+
+        if not update_data:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No data provided to update",
             )
-
-        delivery_partner = await self.get(id)
-        delivery_partner.sqlmodel_update(delivery_partner_update)
+        delivery_partner.sqlmodel_update(update_data)
 
         self.session.add(delivery_partner)
         await self.session.commit()

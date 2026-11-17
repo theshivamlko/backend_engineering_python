@@ -61,6 +61,6 @@ class DeliveryPartnerCreate(DeliveryPartnerBase):
     address: str
 
 class DeliveryPartnerUpdate(BaseModel):
-    serviceable_area_code: list[int]
-    max_handling_capacity: int
+    serviceable_zip_codes: list[int] | None = Field(default=None,validation_alias="serviceable_zip_codes")
+    max_handling_capacity: int | None = Field(default=None)
 

@@ -102,7 +102,7 @@ class DeliveryPartner(User, table=True):
     @property
     def active_shipments(self):
        return [
-            shipment for shipment in self.shipments if shipment.status == ShipmentStatus.delivered
+            shipment for shipment in self.shipments if shipment.status != ShipmentStatus.delivered
         ]
 
     @property

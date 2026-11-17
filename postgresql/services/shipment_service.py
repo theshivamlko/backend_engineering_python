@@ -50,7 +50,7 @@ class ShipmentService:
 
         return shipment
 
-    async def delete(self, id: int) -> dict[str, str]:
+    async def delete(self, id: UUID) -> dict[str, str]:
         shipment = await self.get(id)
         await self.session.delete(shipment)
         await self.session.commit()

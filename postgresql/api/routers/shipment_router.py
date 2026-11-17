@@ -15,11 +15,11 @@ shipment_router = APIRouter(prefix="/api/v1", tags=["Shipment"])
 
 ### Read a shipment by id
 @shipment_router.get("/shipment", response_model=ShipmentRead)
-async def get_shipment(id:str, seller: SellerDepends, service: ShipmentServiceDepends) -> Shipment:
+async def get_shipment(id:UUID, seller: SellerDepends, service: ShipmentServiceDepends) -> Shipment:
     # Check for shipment with given id
     print(f"==>Getting shipment with id: {id}")
-    uuid = parse_shipment_id(id)
-    shipment = await service.get(uuid)
+    # uuid = parse_shipment_id(id)
+    shipment = await service.get(id)
 
     if shipment is None:
         raise HTTPException(
@@ -43,7 +43,7 @@ async def create_shipment(update_shipment: ShipmentCreate, seller: SellerDepends
 
 ### Update fields of a shipment
 @shipment_router.patch("/shipmentUpdate", response_model=ShipmentRead)
-async def update_shipment(id: int, shipment_update: ShipmentUpdate,
+async def update_shipment(id: UUID, shipment_update: ShipmentUpdate,
                           partner: DeliveryPartnerDepends,
                           service: ShipmentServiceDepends) -> Shipment:
     shipment = await service.get(id)
@@ -60,7 +60,7 @@ async def update_shipment(id: int, shipment_update: ShipmentUpdate,
 
 ### Delete a shipment by id
 @shipment_router.delete("/shipmentDelete")
-async def delete_shipment(id: int,  service: ShipmentServiceDepends) -> dict[str, str]:
+async def delete_shipment(id: UUID,  service: ShipmentServiceDepends) -> dict[str, str]:
     shipment = await service.get(id)
 
     if shipment is None:
