@@ -1,4 +1,5 @@
 from datetime import timedelta, timezone
+from uuid import uuid4
 
 from fastapi import HTTPException
 from starlette import status
@@ -6,7 +7,7 @@ from starlette import status
 from config import security_settings
 
 
-def generate_access_token(data: dict, expires_delta: timedelta = timedelta(seconds=15)) -> str:
+def generate_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=60)) -> str:
     """
     Generate a JWT access token for the given user ID.
 
@@ -23,6 +24,7 @@ def generate_access_token(data: dict, expires_delta: timedelta = timedelta(secon
     expiration = datetime.now(timezone.utc) + expires_delta
     payload = {
         "data": data,
+        "jti": uuid4().hex,  # Generate a unique identifier for the token
         "exp": expiration
     }
     print("Generating token with payload:", payload)  # Debugging line

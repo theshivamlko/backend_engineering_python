@@ -22,6 +22,13 @@ class SecuritySettings(BaseSettings):
 
     model_config = _base_config
 
+class RedisSettings(BaseSettings):
+    REDIS_HOST: str
+    REDIS_PORT: int
+
+    model_config = _base_config
+
 settings = DatabaseSettings()
 security_settings = SecuritySettings()
+redis_settings = RedisSettings()
 

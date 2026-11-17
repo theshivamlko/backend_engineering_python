@@ -6,8 +6,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from core.security import oauth_scheme
 from models.schemas import SellerRead, SellerCreate
 from models.models import Seller
-from ..dependencies.dependency import SellerServiceDepends, SessionDep
+from ..dependencies.dependency import SellerServiceDepends, SessionDep, AccessTokenDepends
 from utils import decode_access_token
+from database.redis_db import add_jti_to_blacklist
 
 
 seller_router = APIRouter(prefix="/api/v1/seller", tags=["Seller"])
@@ -40,3 +41,16 @@ async def dashboard(token: Annotated[str, Depends(oauth_scheme)], session: Sessi
 
 
     return {"message": "Welcome to the seller dashboard!", "data": seller_copy}
+
+
+
+@seller_router.get("/logout")
+async def logout(token: AccessTokenDepends, session: SessionDep):
+
+    print("Logout Token:", token)  # Print the token for debugging purposes
+    await add_jti_to_blacklist(token["jti"])
+
+
+    # Here you can implement the logic to invalidate the token if needed
+
+    return {"message": "Successfully logged out"}
