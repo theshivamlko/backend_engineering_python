@@ -5,7 +5,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from core.security import oauth_scheme
 from models.schemas import SellerRead, SellerCreate
-from ..dependencies.dependency import SellerServiceDepends
+from models.models import Seller
+from ..dependencies.dependency import SellerServiceDepends, SessionDep
 from utils import decode_access_token
 
 
@@ -29,7 +30,13 @@ async def login_seller(form: Annotated[OAuth2PasswordRequestForm, Depends()],
 
 
 @seller_router.post("/dashboard")
-async def dashboard(token: Annotated[str, Depends(oauth_scheme)], seller_service: SellerServiceDepends):
+async def dashboard(token: Annotated[str, Depends(oauth_scheme)], session: SessionDep):
     print("Dashboard Token:", token)  # Print the token for debugging purposes
+
     payload = decode_access_token(token)
-    return {"message": "Welcome to the seller dashboard!", "payload": payload}
+
+    seller = await session.get(Seller, payload["data"]["user"]["id"])
+    seller_copy= seller.model_dump(exclude={"pass_hash"})
+
+
+    return {"message": "Welcome to the seller dashboard!", "data": seller_copy}
