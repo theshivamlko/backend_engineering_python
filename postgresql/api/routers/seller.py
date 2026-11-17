@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
 from core.security import oauth_scheme
-from models.schemas import SellerRead, SellerCreate
-from models.models import Seller
+from database.models.schemas import SellerRead, SellerCreate
+from database.models.models import Seller
 from ..dependencies.dependency import SellerServiceDepends, SessionDep, AccessTokenDepends
 from utils import decode_access_token
 from database.redis_db import add_jti_to_blacklist

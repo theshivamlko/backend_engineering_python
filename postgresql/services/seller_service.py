@@ -1,16 +1,13 @@
-from datetime import datetime, timedelta
 from fastapi import HTTPException
 
-import jwt
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select, SQLModel
+from sqlmodel import select
 from starlette import status
-from config import security_settings
 
-from models.schemas import SellerCreate
-from models.models import Seller
-from utils import generate_access_token, decode_access_token
+from database.models.schemas import SellerCreate
+from database.models.models import Seller
+from utils import generate_access_token
 
 
 class SellerService:
@@ -48,7 +45,7 @@ class SellerService:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
         token = generate_access_token({
-            "user": seller.model_dump(exclude={"pass_hash"})
+            "user": seller.model_dump(mode="json",exclude={"pass_hash"})
         })
         return token
 

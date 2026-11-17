@@ -1,5 +1,5 @@
 from datetime import timedelta, timezone
-from uuid import uuid4
+from uuid import uuid4, UUID
 
 from fastapi import HTTPException
 from starlette import status
@@ -62,3 +62,13 @@ def decode_access_token(token: str) -> dict:
         )
     except jwt.PyJWTError:
         raise None
+
+
+def parse_shipment_id(value: str) -> UUID:
+    try:
+        return UUID(value)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail="Something went wrong: invalid shipment ID",
+        ) from exc

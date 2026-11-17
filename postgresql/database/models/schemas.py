@@ -1,7 +1,9 @@
 from datetime import datetime
+from uuid import UUID
+
 from pydantic import BaseModel, Field, EmailStr
 
-from models.models import ShipmentStatus
+from database.models.models import ShipmentStatus, Seller
 
 
 class BaseShipment(BaseModel):
@@ -9,10 +11,6 @@ class BaseShipment(BaseModel):
     weight: float = Field(le=25)
     destination: int
 
-
-class ShipmentRead(BaseShipment):
-    status: ShipmentStatus
-    estimated_delivery: datetime
 
 
 class ShipmentCreate(BaseShipment):
@@ -30,6 +28,13 @@ class SellerCreate(BaseModel):
     password: str
 
 class SellerRead(BaseModel):
-    id: int
+    id: UUID
     name: str
     email: EmailStr
+
+
+class ShipmentRead(BaseShipment):
+    status: ShipmentStatus
+    estimated_delivery: datetime
+    id: UUID
+    seller:SellerRead

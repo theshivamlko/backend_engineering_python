@@ -1,10 +1,11 @@
 from datetime import datetime, timezone, timedelta
+from uuid import UUID
 
 from fastapi import HTTPException
 from rich import status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.models import Shipment, ShipmentStatus
+from database.models.models import Shipment, ShipmentStatus, Seller
 
 
 class ShipmentService:
@@ -12,14 +13,16 @@ class ShipmentService:
         self.session = session
 
 
-    async def get(self,id:int)    -> type[Shipment] | None:
+    async def get(self,id:UUID) -> Shipment | None:
         return await self.session.get(Shipment,id)
 
-    async def add(self, shipment: Shipment) -> Shipment:
+    async def add(self, shipment: Shipment,seller:Seller) -> Shipment:
         new_shipment = Shipment(
-            **shipment.model_dump(),
+            **shipment.model_dump(mode="json"),
             status=ShipmentStatus.placed,
             estimated_delivery=datetime.now(tz=timezone.utc) + timedelta(days=3),
+            seller_id=seller.id,
+            seller=seller
         )
 
         self.session.add(new_shipment)
