@@ -86,7 +86,7 @@ class DeliveryPartnerService:
 
         return delivery_partner
 
-    async def get_partner_by_zipcodes(self, zipcode: int, ) -> Sequence[DeliveryPartner]:
+    async def get_partner_by_zipcodes(self, zipcode: int, ) -> DeliveryPartner:
 
         result = await self.session.execute(
             select(DeliveryPartner).where(any_(DeliveryPartner.serviceable_zip_codes) == zipcode)
@@ -103,16 +103,18 @@ class DeliveryPartnerService:
 
     async def assign_shipment_to_partner(self, shipment: Shipment):
         delivery_partners = await self.get_partner_by_zipcodes(shipment.destination)
-
+        print("==> DeliveryPartnerService assign_shipment_to_partner",delivery_partners)
         if not delivery_partners:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Delivery partner not found"
             )
 
-        for partner in delivery_partners:
-            if partner.current_handling_capacity > 0:
-                partner.shipments.append(shipment)
+        print("==> DeliveryPartnerService assign_shipment_to_partner max_handling_capacity",delivery_partners.max_handling_capacity)
+        print("==> DeliveryPartnerService assign_shipment_to_partner shipments",len(delivery_partners.shipments))
+        print("==> DeliveryPartnerService assign_shipment_to_partner current_handling_capacity",delivery_partners.current_handling_capacity )
+        if delivery_partners.current_handling_capacity > 0:
+                delivery_partners.shipments.append(shipment)
 
                 return shipment
 

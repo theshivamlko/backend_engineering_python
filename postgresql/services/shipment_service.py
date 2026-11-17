@@ -26,8 +26,8 @@ class ShipmentService:
             seller=seller
         )
 
-        await self.delivery_partner_service.assign_shipment_to_partner(new_shipment)
-
+        partner = await self.delivery_partner_service.assign_shipment_to_partner(new_shipment)
+        new_shipment.delivery_partner_id = partner.id
         self.session.add(new_shipment)
         await self.session.commit()
         await self.session.refresh(new_shipment)
