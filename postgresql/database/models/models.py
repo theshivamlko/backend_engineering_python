@@ -128,7 +128,7 @@ class ShipmentEvent(SQLModel, table=True):
         default=datetime.utcnow,
         nullable=False
     ))
-    location:int = Field(sa_column=Column())
+    location:int
     status:ShipmentStatus = Field()
     description:str | None = Field(default=None)
 

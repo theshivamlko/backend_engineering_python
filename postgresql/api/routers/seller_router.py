@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -11,7 +12,7 @@ from utils import decode_access_token
 from database.redis_db import add_jti_to_blacklist
 
 
-seller_router = APIRouter(prefix="/api/v1/seller", tags=["Seller"])
+seller_router = APIRouter(prefix="/api/seller", tags=["Seller"])
 
 
 @seller_router.post("/signUp", response_model=SellerRead)
@@ -26,6 +27,8 @@ async def login_seller(form: Annotated[OAuth2PasswordRequestForm, Depends()],
                        seller_service: SellerServiceDepends):
     token = await seller_service.token(form.username, form.password)
     print("Login Token:", token)  # Print the token for debugging purposes
+
+    logging.debug("Login Token:", token)
 
     return {"access_token": token, "token_type": "bearer"}
 

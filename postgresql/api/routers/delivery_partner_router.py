@@ -9,7 +9,7 @@ from ..dependencies.dependency import SessionDep, SellerAccessTokenDepends, \
 from database.redis_db import add_jti_to_blacklist
 
 
-delivery_router = APIRouter(prefix="/api/v1/delivery", tags=["Delivery Partner"])
+delivery_router = APIRouter(prefix="/api/delivery", tags=["Delivery Partner"])
 
 
 @delivery_router.post("/signUp", response_model=DeliveryPartnerRead)

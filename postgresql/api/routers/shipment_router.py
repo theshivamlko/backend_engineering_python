@@ -10,7 +10,7 @@ from utils import parse_shipment_id
 
 
 
-shipment_router = APIRouter(prefix="/api/v1", tags=["Shipment"])
+shipment_router = APIRouter(prefix="/api", tags=["Shipment"])
 
 
 ### Read a shipment by id

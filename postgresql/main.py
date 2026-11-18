@@ -75,3 +75,9 @@ def get_scalar_docs():
         openapi_url=app.openapi_url,
         title="Scalar API",
     )
+
+
+
+@app.get("/health", include_in_schema=False)
+async def health():
+    return {"status": "ok"}
