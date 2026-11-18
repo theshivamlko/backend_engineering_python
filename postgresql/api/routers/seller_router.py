@@ -21,7 +21,7 @@ async def sign_up_seller(seller: SellerCreate, seller_service: SellerServiceDepe
     return seller
 
 
-@seller_router.post("/sellerLogin")
+@seller_router.post("/sellerLogin",name="Seller Login API")
 async def login_seller(form: Annotated[OAuth2PasswordRequestForm, Depends()],
                        seller_service: SellerServiceDepends):
     token = await seller_service.token(form.username, form.password)
